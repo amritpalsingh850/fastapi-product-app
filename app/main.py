@@ -9,9 +9,13 @@ from app.routers.product import router
 Base.metadata.create_all(bind=engine)
 
 # app = FastAPI()
+# app = FastAPI(
+#     docs_url="/docs",
+#     openapi_url="/openapi.json"
+# )
 app = FastAPI(
-    docs_url="/docs",
-    openapi_url="/openapi.json"
+    title="Microservice One",
+    root_path="/one"
 )
 
 app.mount(

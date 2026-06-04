@@ -52,6 +52,8 @@ uvicorn app.main:app --host 0.0.0.0 --port 8000
 sudo nano /etc/systemd/system/fastapi.service
 
 sudo nano /etc/systemd/system/fastapi-one.service
+sudo systemctl restart fastapi
+sudo systemctl restart fastapi-one
 
 
 sudo nano /etc/nginx/sites-available/fastapi
