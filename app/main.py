@@ -13,9 +13,13 @@ Base.metadata.create_all(bind=engine)
 #     docs_url="/docs",
 #     openapi_url="/openapi.json"
 # )
+# app = FastAPI(
+#     title="Microservice One",
+#     root_path="/one"
+# )
 app = FastAPI(
-    title="Microservice One",
-    root_path="/one"
+    title="Microservice Two",
+    root_path="/two"
 )
 
 app.mount(
