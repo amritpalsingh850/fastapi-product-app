@@ -1,0 +1,115 @@
+// server {
+//     listen 80;
+//     server_name 98.70.65.215;
+
+//     location / {
+//         proxy_pass http://127.0.0.1:8000;
+
+//         proxy_set_header Host $host;
+//         proxy_set_header X-Real-IP $remote_addr;
+//         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+//         proxy_set_header X-Forwarded-Proto $scheme;
+//     }
+// }
+
+/////////////////
+
+server {
+    listen 443 ssl;
+
+    server_name 98.70.65.215;
+
+    ssl_certificate /etc/nginx/ssl/fastapi.crt;
+    ssl_certificate_key /etc/nginx/ssl/fastapi.key;
+
+    location / {
+        proxy_pass http://127.0.0.1:8000;
+
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+}
+
+server {
+    listen 80;
+    server_name 98.70.65.215;
+
+    return 301 https://$host$request_uri;
+}
+
+
+for 
+
+// https://98.70.65.215/one/docs 
+// http://98.70.65.215/two/docs
+
+server {
+    listen 443 ssl;
+    server_name 98.70.65.215;
+
+    ssl_certificate /etc/nginx/ssl/fastapi.crt;
+    ssl_certificate_key /etc/nginx/ssl/fastapi.key;
+
+    # Microservice 1
+    location /one/ {
+        proxy_pass http://127.0.0.1:8000/;
+
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+
+    # Microservice 2
+    location /two/ {
+        proxy_pass http://127.0.0.1:8001/;
+
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+}
+
+server {
+    listen 80;
+    server_name 98.70.65.215;
+
+    return 301 https://$host$request_uri;
+}
+
+//// another option
+
+server {
+    listen 443 ssl;
+    server_name 98.70.65.215;
+
+    ssl_certificate /etc/nginx/ssl/fastapi.crt;
+    ssl_certificate_key /etc/nginx/ssl/fastapi.key;
+
+    # Microservice 1
+    location /one/ {
+        rewrite ^/one/(.*)$ /$1 break;
+        proxy_pass http://127.0.0.1:8000/;
+
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+
+    # Microservice 2
+    location /two/ {
+        rewrite ^/two/(.*)$ /$1 break;
+        proxy_pass http://127.0.0.1:8001/;
+
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+}
+
+server {
+    listen 80;
+    server_name 98.70.65.215;
+
+    return 301 https://$host$request_uri;
+}

@@ -1,0 +1,25 @@
+[Unit]
+Description=FastAPI Microservice One
+After=network.target
+
+[Service]
+User=azureuser
+WorkingDirectory=/home/azureuser/another/fastapi-product-app
+EnvironmentFile=/home/azureuser/another/fastapi-product-app/.env
+
+ExecStart=/home/azureuser/another/fastapi-product-app/venv/bin/uvicorn app.main:app --host 0.0.0.0 --port 8001
+
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+
+
+
+sudo systemctl daemon-reload
+
+sudo systemctl enable fastapi-one
+
+sudo systemctl start fastapi-one
+
+sudo systemctl status fastapi-one
